@@ -315,7 +315,7 @@ const handleGalleryButton = async () => {
                                 </MenuItem>
                               </MenuList>
                             </Menu>
-                            <Button onClick={handleGalleryButton}>
+                            <Button  onClick={handleGalleryButton}>
                               Gallery
                             </Button>
                             {isLoggedIn && (

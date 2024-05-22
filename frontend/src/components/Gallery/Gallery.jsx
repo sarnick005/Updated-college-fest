@@ -2,13 +2,21 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import MediaPlayer from "../utils/MediaPlayer";
 import { useAuth } from "../utils/AuthContext";
+import {
+  Box,
+  Button,
+  Text,
+  Heading,
+  Center,
+  SimpleGrid,
+} from "@chakra-ui/react";
+import Header from "../header";
 
 const Gallery = () => {
   const [galleryPosts, setGalleryPosts] = useState([]);
   const [loggedInUserId, setLoggedInUserId] = useState(null);
   const [loggedInUserType, setLoggedInUserType] = useState(null);
   const { isLoggedIn, user } = useAuth();
-  const [isPageReloaded, setIsPageReloaded] = useState(1);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -28,17 +36,8 @@ const Gallery = () => {
       try {
         const response = await axios.get("/api/v1/users/current-user");
         const user = response.data.data;
-        console.log("Logged in user");
-        console.log(user);
         setLoggedInUserId(user._id);
         setLoggedInUserType(user.userType);
-       
-        const reloadUsingLocationHash = () => {
-          window.location.hash = "reload";
-        };
-        window.onload = reloadUsingLocationHash(); 
-
-     
       } catch (error) {
         console.error("Error fetching logged in user:", error);
       }
@@ -46,10 +45,10 @@ const Gallery = () => {
 
     fetchPosts();
 
-    if (isLoggedIn ) {
+    if (isLoggedIn) {
       fetchLoggedInUser();
     }
-  }, [isLoggedIn, isPageReloaded]);
+  }, [isLoggedIn]);
 
   const handleDeleteButton = async (postId) => {
     try {
@@ -63,25 +62,53 @@ const Gallery = () => {
   };
 
   return (
-    <div>
-      {galleryPosts.map((post) => (
-        <div key={post._id}>
-          <p>Username: {post.username}</p>
-          <p>Caption: {post.caption}</p>
-          <p>Description: {post.description}</p>
-          <div className="gallery-posts">
-            <MediaPlayer
-              content={post.postedContent}
-              description={post.description}
-            />
-          </div>
-          {loggedInUserId === post.userId || loggedInUserType === "ADMIN" ? (
-            <button onClick={() => handleDeleteButton(post._id)}>Delete</button>
-          ) : null}{" "}
-          <hr />
-        </div>
-      ))}
-    </div>
+    <Box style={{backgroundColor: "black"}}>
+      <Header />
+      <br /><br /><br /><br /><br /><br />
+      <Center>
+        <Heading style={{color:"white"}} as="h3" size="lg" mb={8} mt={8}>
+          Gallery
+        </Heading>
+      </Center>
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={8} padding={4}>
+        {galleryPosts.map((post) => (
+          <Box
+            key={post._id}
+            p={4}
+            borderWidth="1px"
+            borderRadius="lg"
+            overflow="hidden"
+            boxShadow="md"
+            bg="white"
+          >
+            <Text fontWeight="bold">Username: {post.username}</Text>
+            <Text>Caption: {post.caption}</Text>
+            <Text>Description: {post.description}</Text>
+            <Box className="gallery-posts" mt={4}>
+              <MediaPlayer
+                content={post.postedContent}
+                description={post.description}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  maxHeight: "300px",
+                  maxWidth: "300px",
+                }}
+              />
+            </Box>
+            {loggedInUserId === post.userId || loggedInUserType === "ADMIN" ? (
+              <Button
+                mt={4}
+                colorScheme="red"
+                onClick={() => handleDeleteButton(post._id)}
+              >
+                Delete
+              </Button>
+            ) : null}
+          </Box>
+        ))}
+      </SimpleGrid>
+    </Box>
   );
 };
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
-
+import "./PublishPost.css"
 
 const PublishPost = () => {
   const { isLoggedIn } = useAuth();
@@ -62,14 +62,14 @@ const PublishPost = () => {
 
       console.log("Post created successfully:", response.data);
       setIsSubmitted(true);
-      setTimeout(() => navigate("/"), 2000); 
+      setTimeout(() => navigate("/"), 2000);
     } catch (error) {
       console.error("Error publishing post:", error);
     }
   };
 
   const handleCancel = () => {
-    navigate("/publish-post");
+    navigate("/");
   };
 
   if (isSubmitted) {
@@ -82,50 +82,57 @@ const PublishPost = () => {
   }
 
   return (
-    <div className="publish-post-container">
-      <h2>Publish Post</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Content (Image/Video):</label>
-          <input
-            required
-            type="file"
-            name="postedContent"
-            accept="image/*, video/*"
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Caption:</label>
-          <input
-            required
-            type="text"
-            name="caption"
-            value={formData.caption}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label>Description:</label>
-          <textarea
-            required
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          />
-        </div>
+    <div className="register-body">
+      <div className="register-container">
+        <h2 className="register-text">Publish Post</h2>
+        <form onSubmit={handleSubmit} className="register">
+          <div className="register-group">
+            <label>Content (Image/Video):</label>
+            <input
+              required
+              type="file"
+              name="postedContent"
+              accept="image/*, video/*"
+              onChange={handleChange}
+              className="select-dept"
+            />
+          </div>
+          <div className="register-group">
+            <label>Caption:</label>
+            <input
+              required
+              type="text"
+              name="caption"
+              value={formData.caption}
+              onChange={handleChange}
+              className="select-dept"
+            />
+          </div>
+          <div className="register-group">
+            <label>Description:</label>
+            <textarea
+              required
+              name="description"
+              value={formData.description}
+              onChange={handleChange}
+              className="select-dept"
+            />
+          </div>
 
-        <div className="buttons-container">
-          <button type="submit">Publish Post</button>
-          <button
-            type="button"
-            onClick={handleCancel}
-            className="cancel-button"
-          >
-            Cancel
-          </button>
-        </div>
-      </form>
+          <div className="buttons-container">
+            <button type="submit" className="btn">
+              Publish Post
+            </button>
+            <button
+              type="button"
+              onClick={handleCancel}
+              className="btn cancel-button"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

@@ -9,7 +9,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [department, setDepartment] = useState("");
   const [rollNumber, setRollNumber] = useState("");
-  const [userType, setUserType] = useState("USER"); // Initialize with "USER"
+  const [userType, setUserType] = useState("USER"); 
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -75,6 +75,7 @@ const Register = () => {
           <div className="register-group">
             <label htmlFor="department">Department</label>
             <select
+              className="select-dept"
               name="department"
               id="department"
               value={department}
@@ -106,6 +107,11 @@ const Register = () => {
             Register
           </button>
         </form>
+        <div className="login-div">
+          <p>
+            Already have an account? <a href="/login">Login</a>
+          </p>
+        </div>
       </div>
     </div>
   );
