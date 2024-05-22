@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./Login.css"; // Import the CSS file
+import "./Login.css";
 
 const Login = () => {
-  const [adminName, setAdminName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,13 +11,22 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/v1/admin/login", {
-        adminName,
+      console.log(email);
+      console.log(password);
+      const response = await axios.post("/api/v1/users/login", {
         email,
         password,
       });
+      console.log(response);
       if (response.data.success) {
-        navigate("/profile");
+        // Fetch posts after successful login
+        const postsResponse = await axios.get("/api/v1/posts");
+        const posts = postsResponse.data.data.allPosts;
+        const sortedPosts = posts.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+        // Pass the sorted posts as state to the Gallery component
+        navigate("/gallery");
       }
     } catch (error) {
       console.error("Login failed", error);
@@ -30,18 +38,6 @@ const Login = () => {
       <div className="form-container">
         <h1 className="login-text">Login</h1>
         <form className="form" onSubmit={handleLogin}>
-          <div className="form-group">
-            <label htmlFor="adminName">Name</label>
-            <input
-              type="text"
-              name="Name"
-              id="Name"
-              placeholder="Name"
-              value={adminName}
-              onChange={(e) => setAdminName(e.target.value)}
-              required
-            />
-          </div>
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -70,7 +66,11 @@ const Login = () => {
             Login
           </button>
         </form>
-        <div className="register-div"><p>Don't have an account? <a href="/register">Register</a></p></div>
+        <div className="register-div">
+          <p>
+            Don't have an account? <a href="/register">Register</a>
+          </p>
+        </div>
       </div>
     </div>
   );

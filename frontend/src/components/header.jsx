@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import React from "react";
 import axios from "axios";
+import { useAuth } from "./utils/AuthContext";
+
 import {
   Drawer,
   DrawerBody,
@@ -27,7 +29,10 @@ import { useNavigate } from "react-router-dom";
 import { useMediaQuery } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useRef } from "react";
+
+
 const Header = ({ color }) => {
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [isMobile] = useMediaQuery("(max-width: 768px)");
   const [mob, setMob] = useState("none");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -36,6 +41,7 @@ const Header = ({ color }) => {
   const [countdown, setCountdown] = useState("");
   const [colorChange, setColorchange] = useState(false);
   const navigate = useNavigate();
+
   const changeNavbarColor = () => {
     if (window.scrollY >= 80) {
       setColorchange(true);
@@ -43,7 +49,9 @@ const Header = ({ color }) => {
       setColorchange(false);
     }
   };
+
   window.addEventListener("scroll", changeNavbarColor);
+
   useEffect(() => {
     const interval = setInterval(() => {
       var eventDate = new Date(2024, 4, 24);
@@ -66,6 +74,31 @@ const Header = ({ color }) => {
     }, 1000);
     return () => clearInterval(interval);
   });
+  useEffect(()=>{
+    handleLogoutButton
+  },[])
+
+  const handleLogoutButton = async () => {
+    try {
+      await axios.post("/api/v1/users/logout");
+      setIsLoggedIn(false);
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+
+const handleGalleryButton = async () => {
+  try {
+    
+    navigate("/gallery");
+  } catch (error) {
+    console.error("Logout failed", error);
+  }
+};
+
+ 
+  console.log(isLoggedIn);
   return (
     <>
       <header>
@@ -80,7 +113,7 @@ const Header = ({ color }) => {
         >
           <div
             style={{
-              height:"150px"
+              height: "150px",
             }}
             id="sticky-header"
             className="main-header-area"
@@ -219,11 +252,9 @@ const Header = ({ color }) => {
                                 >
                                   Cancel
                                 </Button>
-                                
                               </DrawerFooter>
                             </DrawerContent>
                           </Drawer>
-                        
                         </div>
                       </div>
                     </div>
@@ -284,6 +315,14 @@ const Header = ({ color }) => {
                                 </MenuItem>
                               </MenuList>
                             </Menu>
+                            <Button onClick={handleGalleryButton}>
+                              Gallery
+                            </Button>
+                            {isLoggedIn && (
+                              <Button onClick={handleLogoutButton}>
+                                Logout
+                              </Button>
+                            )}
                           </ul>
                         </nav>
                       </div>
@@ -295,10 +334,15 @@ const Header = ({ color }) => {
                         className="book_btn d-none d-lg-block"
                         style={{ display: isMobile ? "none" : "" }}
                       >
-                        <a style={{ fontSize: "120%" }} href="/login">
-                          Login
-                        </a>
-                      
+                        {isLoggedIn ? (
+                          <a style={{ fontSize: "120%" }} href="/publish-post">
+                            Post
+                          </a>
+                        ) : (
+                          <a style={{ fontSize: "120%" }} href="/login">
+                            Login
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
