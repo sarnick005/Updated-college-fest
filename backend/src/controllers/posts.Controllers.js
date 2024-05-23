@@ -58,17 +58,20 @@ const getAllPosts = asyncHandler(async (req, res) => {
 // PUBLISH  A POST
 
 const publishAPost = asyncHandler(async (req, res) => {
-  const { description, caption } = req.body;
-  console.log(caption, description);
-  const contentFilePath = req.files?.postedContent[0]?.path;
-  console.log(contentFilePath);
-  if (!contentFilePath) {
-    throw new ApiError(400, "Content file is required");
-  }
-
-  const contentURL = await uploadOnCloudinary(contentFilePath);
-  console.log(contentURL);
   try {
+    const { description, caption } = req.body;
+    console.log("Request body:", req.body);
+
+    const contentFilePath = req.files?.postedContent[0]?.path;
+    console.log("File path:", contentFilePath);
+
+    if (!contentFilePath) {
+      throw new ApiError(400, "Content file is required");
+    }
+
+    const contentURL = await uploadOnCloudinary(contentFilePath);
+    console.log("Uploaded content URL:", contentURL);
+
     const post = await Post.create({
       userId: req.user._id,
       postedContent: contentURL.url,
@@ -81,14 +84,23 @@ const publishAPost = asyncHandler(async (req, res) => {
       throw new ApiError(500, "Something went wrong while creating the post");
     }
 
-    console.log(`POST CREATED`);
+    console.log("Post created successfully:", createdPost);
 
     return res
       .status(201)
-      .json(new ApiResponse(200, createdPost, "Post created successfully"));
+      .json(new ApiResponse(201, createdPost, "Post created successfully"));
   } catch (error) {
     console.error("Error creating post:", error);
-    throw new ApiError(500, "Something went wrong while creating the post");
+
+    if (error instanceof ApiError) {
+      return res
+        .status(error.statusCode)
+        .json(new ApiResponse(error.statusCode, null, error.message));
+    } else {
+      return res
+        .status(500)
+        .json(new ApiResponse(500, null, "An unexpected error occurred"));
+    }
   }
 });
 

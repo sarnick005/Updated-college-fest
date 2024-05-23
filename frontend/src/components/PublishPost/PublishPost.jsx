@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../utils/AuthContext";
-import "./PublishPost.css"
+import "./PublishPost.css";
 
 const PublishPost = () => {
   const { isLoggedIn } = useAuth();
@@ -14,6 +14,8 @@ const PublishPost = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
 
+
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -21,13 +23,13 @@ const PublishPost = () => {
       const selectedFile = files[0];
       if (selectedFile) {
         if (selectedFile.type.startsWith("image/")) {
-          if (selectedFile.size > 10 * 1024 * 1024) {
+          if (selectedFile.size >= 10 * 1024 * 1024) {
             alert("Image file size should be less than 10MB");
             e.target.value = null;
             return;
           }
         } else if (selectedFile.type.startsWith("video/")) {
-          if (selectedFile.size > 100 * 1024 * 1024) {
+          if (selectedFile.size >= 100 * 1024 * 1024) {
             alert("Video file size should be less than 100MB");
             e.target.value = null;
             return;
@@ -64,7 +66,13 @@ const PublishPost = () => {
       setIsSubmitted(true);
       setTimeout(() => navigate("/"), 2000);
     } catch (error) {
-      console.error("Error publishing post:", error);
+      if (error.response) {
+        console.error("Error publishing post:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up the request:", error.message);
+      }
     }
   };
 
