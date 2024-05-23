@@ -18,7 +18,7 @@ const Login = () => {
         password,
       });
         navigate("/");
-      console.log(response);
+      // console.log(response);
       if (response.data.success) {
         // Fetch posts after successful login
         const postsResponse = await axios.get("/api/v1/posts");
