@@ -118,15 +118,14 @@ const Home = () => {
             paddingBottom: "2%",
             margin: "0px",
             fontWeight: "bold",
-            fontSize: isMobile ? "47px" : "80px",
+            fontSize: isMobile ? "40px" : "80px",
           }}
         >
-          We Are Back
+          Countdown Begins
         </h1>
       </Center>
-
-          {}
-      {/* <Timer selectedDateTime={new Date(2024, 4, 24)} />{" "} */}
+      {}
+      <Timer selectedDateTime={new Date(2024, 4, 24)} />{" "}
       {/* Render Timer component */}
       <div style={{ backgroundColor: "black" }}>
         <br></br>
@@ -134,7 +133,7 @@ const Home = () => {
         <br></br>
         <center>
           <img
-            style={{ width: "80%", borderRadius: "10px", height:"800px" }}
+            style={{ width: "100%", borderRadius: "10px", height: "50%" }}
             src="img/ENTHUZEA 2024/poster.jpg"
           ></img>
         </center>
@@ -164,7 +163,7 @@ const Home = () => {
               <TabPanels>
                 <TabPanel>
                   <img
-                    src="img/enthuzea 2022/sponsor.jpg"
+                    src="img/assets/riq.jpeg"
                     style={{
                       width: "40%",
                       borderRadius: "0%",
@@ -175,19 +174,7 @@ const Home = () => {
                 </TabPanel>
                 <TabPanel>
                   <img
-                    src="img/enthuzea 2022/sponsor2.jpg"
-                    style={{
-                      width: "40%",
-                      borderRadius: "0%",
-                      paddingBottom: "2%",
-                      display: "inline",
-                      paddingLeft: "3%",
-                    }}
-                  ></img>
-                </TabPanel>
-                <TabPanel>
-                  <img
-                    src="img/enthuzea 2022/sponsor3.jpg"
+                    src="img/assets/tea.jpeg"
                     style={{
                       width: "40%",
                       borderRadius: "0%",
@@ -199,7 +186,19 @@ const Home = () => {
                 </TabPanel>
                 <TabPanel>
                   <img
-                    src="img/enthuzea 2022/sponsor4.png"
+                    src="img/assets/zill.JPEG"
+                    style={{
+                      width: "40%",
+                      borderRadius: "0%",
+                      paddingBottom: "2%",
+                      display: "inline",
+                      paddingLeft: "3%",
+                    }}
+                  ></img>
+                </TabPanel>
+                <TabPanel>
+                  <img
+                    src="img/assets/avisek.png"
                     style={{
                       width: "40%",
                       height: "190px",

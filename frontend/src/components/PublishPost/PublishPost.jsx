@@ -76,7 +76,7 @@ const PublishPost = () => {
     return (
       <div className="success-message">
         <h2>Post created successfully!</h2>
-        <p>Redirecting to profile...</p>
+        <p>Redirecting to home...</p>
       </div>
     );
   }

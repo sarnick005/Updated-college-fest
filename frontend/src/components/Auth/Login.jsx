@@ -17,6 +17,7 @@ const Login = () => {
         email,
         password,
       });
+        navigate("/");
       console.log(response);
       if (response.data.success) {
         // Fetch posts after successful login
@@ -25,8 +26,8 @@ const Login = () => {
         const sortedPosts = posts.sort(
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
         );
-        // Pass the sorted posts as state to the Gallery component
-        navigate("/gallery");
+       
+      
       }
     } catch (error) {
       console.error("Login failed", error);

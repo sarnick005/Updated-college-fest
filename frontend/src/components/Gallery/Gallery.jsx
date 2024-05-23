@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import MediaPlayer from "../utils/MediaPlayer";
 import { useAuth } from "../utils/AuthContext";
 import {
   Box,
@@ -11,6 +10,7 @@ import {
   SimpleGrid,
 } from "@chakra-ui/react";
 import Header from "../header";
+import GalleryCard from "./GalleryCard";
 
 const Gallery = () => {
   const [galleryPosts, setGalleryPosts] = useState([]);
@@ -62,11 +62,16 @@ const Gallery = () => {
   };
 
   return (
-    <Box style={{backgroundColor: "black"}}>
+    <Box style={{ backgroundColor: "black" }}>
       <Header />
-      <br /><br /><br /><br /><br /><br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <Center>
-        <Heading style={{color:"white"}} as="h3" size="lg" mb={8} mt={8}>
+        <Heading style={{ color: "white" }} as="h3" size="lg" mb={8} mt={8}>
           Gallery
         </Heading>
       </Center>
@@ -81,21 +86,13 @@ const Gallery = () => {
             boxShadow="md"
             bg="white"
           >
+            <GalleryCard
+              media={post.postedContent}
+              description={post.description}
+            />
             <Text fontWeight="bold">Username: {post.username}</Text>
             <Text>Caption: {post.caption}</Text>
             <Text>Description: {post.description}</Text>
-            <Box className="gallery-posts" mt={4}>
-              <MediaPlayer
-                content={post.postedContent}
-                description={post.description}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  maxHeight: "300px",
-                  maxWidth: "300px",
-                }}
-              />
-            </Box>
             {loggedInUserId === post.userId || loggedInUserType === "ADMIN" ? (
               <Button
                 mt={4}

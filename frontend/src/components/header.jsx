@@ -30,7 +30,6 @@ import { useMediaQuery } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useRef } from "react";
 
-
 const Header = ({ color }) => {
   const { isLoggedIn, setIsLoggedIn } = useAuth();
   const [isMobile] = useMediaQuery("(max-width: 768px)");
@@ -54,29 +53,25 @@ const Header = ({ color }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      var eventDate = new Date(2024, 4, 24);
-      var _second = 1000;
-      var _minute = _second * 60;
-      var _hour = _minute * 60;
-      var _day = _hour * 24;
+      const eventDate = new Date(2024, 4, 24);
+      const _second = 1000;
+      const _minute = _second * 60;
+      const _hour = _minute * 60;
+      const _day = _hour * 24;
       const currentDate = new Date();
-      var distance = eventDate - currentDate;
+      const distance = eventDate - currentDate;
 
-      var days = Math.floor(distance / _day);
-      var hours = Math.floor((distance % _day) / _hour);
-      var minutes = Math.floor((distance % _hour) / _minute);
-      var seconds = Math.floor((distance % _minute) / _second);
-      if (hours < 10) hours = 0 + hours.toString();
-      if (minutes < 10) minutes = 0 + minutes.toString();
-      if (seconds < 10) seconds = 0 + seconds.toString();
-      const timer = days + ":" + hours + ":" + minutes + ":" + seconds;
+      const days = Math.floor(distance / _day);
+      const hours = Math.floor((distance % _day) / _hour);
+      const minutes = Math.floor((distance % _hour) / _minute);
+      const seconds = Math.floor((distance % _minute) / _second);
+      const timer = `${days}:${hours < 10 ? "0" : ""}${hours}:${
+        minutes < 10 ? "0" : ""
+      }${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
       setCountdown(timer);
     }, 1000);
     return () => clearInterval(interval);
-  });
-  useEffect(()=>{
-    handleLogoutButton
-  },[])
+  }, []);
 
   const handleLogoutButton = async () => {
     try {
@@ -88,17 +83,14 @@ const Header = ({ color }) => {
     }
   };
 
-const handleGalleryButton = async () => {
-  try {
-    
-    navigate("/gallery");
-  } catch (error) {
-    console.error("Logout failed", error);
-  }
-};
+  const handleGalleryButton = async () => {
+    try {
+      navigate("/gallery");
+    } catch (error) {
+      console.error("Navigation failed", error);
+    }
+  };
 
- 
-  console.log(isLoggedIn);
   return (
     <>
       <header>
@@ -109,7 +101,7 @@ const handleGalleryButton = async () => {
             position: "fixed",
             height: isMobile ? "15%" : "",
           }}
-          className="header-area "
+          className="header-area"
         >
           <div
             style={{
@@ -132,18 +124,16 @@ const handleGalleryButton = async () => {
                             width: isMobile ? "30%" : "50%",
                             borderRadius: isMobile ? "50px" : "40px",
                           }}
-                          margin="0px"
-                          padding="0px"
                           src="./img/logo.png"
                           alt="logo"
-                        ></img>
+                        />
                       </a>
                     </div>
                   </div>
                   {isMobile ? (
-                    <div className="col-xl-3 col-lg-3  d-lg-block">
+                    <div className="col-xl-3 col-lg-3 d-lg-block">
                       <div className="buy_tkt">
-                        <div className="book_btn  d-lg-block">
+                        <div className="book_btn d-lg-block">
                           <Button
                             style={{
                               bottom: "100px",
@@ -176,9 +166,8 @@ const handleGalleryButton = async () => {
                               >
                                 ENTHUZEA
                               </DrawerHeader>
-
                               <DrawerBody style={{ backgroundColor: "black" }}>
-                                <div className="main-menu  d-lg-block">
+                                <div className="main-menu d-lg-block">
                                   <nav>
                                     <ul id="navigation">
                                       <li
@@ -220,17 +209,13 @@ const handleGalleryButton = async () => {
                                           Events
                                         </MenuButton>
                                         <MenuList>
-                                          <MenuButton
-                                            onClick={() => {
-                                              navigate("/events");
-                                            }}
+                                          <MenuItem
+                                            onClick={() => navigate("/events")}
                                           >
                                             Fest Info
-                                          </MenuButton>
+                                          </MenuItem>
                                           <MenuItem
-                                            onClick={() => {
-                                              navigate("/dept");
-                                            }}
+                                            onClick={() => navigate("/dept")}
                                           >
                                             Dept. Info
                                           </MenuItem>
@@ -240,7 +225,6 @@ const handleGalleryButton = async () => {
                                   </nav>
                                 </div>
                               </DrawerBody>
-
                               <DrawerFooter
                                 style={{ backgroundColor: "black" }}
                               >
@@ -299,23 +283,15 @@ const handleGalleryButton = async () => {
                             <Menu>
                               <MenuButton as={Button}>Events</MenuButton>
                               <MenuList>
-                                <MenuItem
-                                  onClick={() => {
-                                    navigate("/events");
-                                  }}
-                                >
+                                <MenuItem onClick={() => navigate("/events")}>
                                   Fest Info
                                 </MenuItem>
-                                <MenuItem
-                                  onClick={() => {
-                                    navigate("/dept");
-                                  }}
-                                >
+                                <MenuItem onClick={() => navigate("/dept")}>
                                   Dept. Info
                                 </MenuItem>
                               </MenuList>
                             </Menu>
-                            <Button  onClick={handleGalleryButton}>
+                            <Button onClick={handleGalleryButton}>
                               Gallery
                             </Button>
                             {isLoggedIn && (
@@ -346,7 +322,6 @@ const handleGalleryButton = async () => {
                       </div>
                     </div>
                   </div>
-
                   <div className="col-12">
                     <div className="mobile_menu d-block d-lg-none"></div>
                   </div>
@@ -359,4 +334,5 @@ const handleGalleryButton = async () => {
     </>
   );
 };
+
 export default Header;
